@@ -31,7 +31,7 @@ function App() {
     files.forEach((file) => formData.append("file", file));
 
     try {
-      const res = await fetch("http://localhost:3000/upload", {
+      const res = await fetch("https://pdf-ai-parsing.onrender.com", {
         method: "POST",
         body: formData,
       });
@@ -66,7 +66,7 @@ function App() {
     setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:3000/ask", {
+      const res = await fetch("https://pdf-ai-parsing.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, documentIds }),
