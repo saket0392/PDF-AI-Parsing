@@ -1,4 +1,4 @@
-
+const cors = require("cors");
 const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
@@ -6,13 +6,7 @@ const pdf = require('pdf-parse');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { OpenAI } = require('openai');
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://pdf-ai-parsing-thfz.vercel.app"
-  ],
-  credentials: true
-}));
+
 const mongoDb = require('./Connection');
 const Document = require('./models/Document');
 const Chunk = require('./models/Chunks');
@@ -27,7 +21,13 @@ const app = express();
 const uploads = multer({ dest: 'uploads/' });
 const port = 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://pdf-ai-parsing-thfz.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 function cosineSimilarity(a, b) {
