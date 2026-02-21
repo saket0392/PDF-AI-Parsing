@@ -2,11 +2,10 @@ const cors = require("cors");
 const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
-const pdfParse = require('pdf-parse').default;
+const pdf = require("pdf-parse");
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { OpenAI } = require('openai');
-
 const mongoDb = require('./Connection');
 const Document = require('./models/Document');
 const Chunk = require('./models/Chunks');
@@ -72,7 +71,7 @@ app.post('/upload', uploads.array('file'), async (req, res) => {
       }
 
       const textbuffer = fs.readFileSync(file.path);
-      const data = await pdfParse(textbuffer);
+      const data = await pdf(textbuffer);
       const extractedtext = data.text;
 
       const newDocument = await Document.create({
