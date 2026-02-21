@@ -1,10 +1,4 @@
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://pdf-ai-parsing-thfz.vercel.app"
-  ],
-  credentials: true
-}));
+
 const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
@@ -12,7 +6,13 @@ const pdf = require('pdf-parse');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { OpenAI } = require('openai');
-
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://pdf-ai-parsing-thfz.vercel.app"
+  ],
+  credentials: true
+}));
 const mongoDb = require('./Connection');
 const Document = require('./models/Document');
 const Chunk = require('./models/Chunks');
