@@ -110,7 +110,7 @@ function App() {
   };
 
   return (
-    <div className="h-dvh bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0b1120] text-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0b1120] text-white flex flex-col">
 
     {/* Top Header */}
     <div className="w-full border-b border-white/10 bg-[#0b1220]/70 backdrop-blur-md px-6 py-4 flex items-center justify-between">
