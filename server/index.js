@@ -1,4 +1,10 @@
-const cors = require('cors');
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://pdf-ai-parsing-thfz.vercel.app"
+  ],
+  credentials: true
+}));
 const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
