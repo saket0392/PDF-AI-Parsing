@@ -124,21 +124,27 @@ function App() {
     </div>
 
       {/* 🔹 Mobile Upload Bar */}
-      <div className="md:hidden p-4 border-b border-white/10 flex justify-between items-center">
-        <input
-          type="file"
-          multiple
-          onChange={handleFileChange}
-          className="text-sm file:bg-indigo-600 file:border-0 file:px-3 file:py-1 file:rounded-md file:text-white"
-        />
-        <button
-          onClick={handleUpload}
-          disabled={isUploading}
-          className="bg-indigo-600 px-3 py-2 rounded-lg text-sm disabled:opacity-50"
-        >
-          {isUploading ? "Uploading..." : "Upload"}
-        </button>
-      </div>
+        <div className="md:hidden p-4 border-b border-white/10 flex flex-col gap-3">
+
+          <label className="w-full bg-[#1f2937] border border-gray-700 px-4 py-3 rounded-xl text-sm text-gray-300 cursor-pointer text-center">
+            {files.length > 0 ? `${files.length} file(s) selected` : "Choose PDF files"}
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+
+          <button
+            onClick={handleUpload}
+            disabled={isUploading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 px-4 py-3 rounded-xl font-medium transition"
+          >
+            {isUploading ? "Uploading..." : "Upload Files"}
+          </button>
+
+        </div>
 
       <div className="flex flex-1">
 
