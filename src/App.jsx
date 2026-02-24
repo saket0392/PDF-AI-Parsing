@@ -8,6 +8,7 @@ function App() {
   const [documentIds, setDocumentIds] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const chatEndRef = useRef(null);
 
@@ -15,13 +16,50 @@ function App() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatHistory, isTyping]);
 
+
+  useEffect(() => {
+  const saved = localStorage.getItem("chatHistory");
+  if (saved) {
+    setChatHistory(JSON.parse(saved));
+  }
+
+  const savedDocs = localStorage.getItem("uploadedDocs");
+  if (savedDocs) {
+    setUploadedDocs(JSON.parse(savedDocs));
+  }
+
+  const savedIds = localStorage.getItem("documentIds");
+  if (savedIds) {
+    setDocumentIds(JSON.parse(savedIds));
+  }
+}, []);
+
+        useEffect(() => {
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+      }, [chatHistory]);
+
+      useEffect(() => {
+        localStorage.setItem("uploadedDocs", JSON.stringify(uploadedDocs));
+      }, [uploadedDocs]);
+
+      useEffect(() => {
+        localStorage.setItem("documentIds", JSON.stringify(documentIds));
+      }, [documentIds]);
   const nowTime = () =>
     new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   const handleFileChange = (e) => {
     setFiles(Array.from(e.target.files));
-  };
+  }; 
+  const handleClearContext = () => {
+  setChatHistory([]);
+  setUploadedDocs([]);
+  setDocumentIds([]);
 
+  localStorage.removeItem("chatHistory");
+  localStorage.removeItem("uploadedDocs");
+  localStorage.removeItem("documentIds");
+};
   const handleUpload = async () => {
     if (files.length === 0) return;
 
@@ -44,6 +82,8 @@ function App() {
       }
 
       setFiles([]);
+      setUploadSuccess(true);
+      setTimeout(() => setUploadSuccess(false), 2000);
     } catch (err) {
       console.error(err);
       alert("Upload failed");
@@ -101,7 +141,6 @@ function App() {
 
     setIsTyping(false);
   };
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -117,7 +156,12 @@ function App() {
       <h1 className="text-lg md:text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
         AI PDF Parsing Chat
       </h1>
-
+      <button
+        onClick={handleClearContext}
+        className="text-xs md:text-sm bg-red-600/20 hover:bg-red-600/40 px-3 py-2 rounded-lg transition"
+      >
+        New Session
+</button>
       <span className="hidden md:block text-sm text-gray-400">
         Chat with your uploaded documents
       </span>
@@ -144,6 +188,24 @@ function App() {
             {isUploading ? "Uploading..." : "Upload Files"}
           </button>
 
+          {uploadedDocs.length > 0 && (
+          <div className="mt-3 space-y-2 text-xs">
+            {uploadedDocs.map((doc, i) => (
+              <div
+                key={i}
+                className="bg-[#1f2937] px-3 py-2 rounded-lg flex justify-between items-center"
+              >
+                <span className="truncate">{doc}</span>
+                <span className="text-green-400">✓</span>
+              </div>
+            ))}
+          </div>
+            )}
+            {uploadSuccess && (
+              <div className="text-green-400 text-xs text-center">
+                ✅ Upload successful
+              </div>
+            )}
         </div>
 
       <div className="flex flex-1">
@@ -229,7 +291,7 @@ function App() {
               />
               <button
                 onClick={handleSend}
-                disabled={isTyping}
+                disabled={isTyping || documentIds.length === 0}
                 className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 px-6 py-3 rounded-xl"
               >
                 Send
