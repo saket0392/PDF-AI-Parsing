@@ -162,9 +162,48 @@ function App() {
         </button>
       </div>
 
-      <div className="flex flex-1">
+      {/* 🔹 Mobile Upload Bar */}
+<div className="md:hidden p-4 border-b border-white/10 flex flex-col gap-3">
 
-        
+  <label className="w-full bg-[#1f2937] border border-gray-700 px-4 py-3 rounded-xl text-sm text-gray-300 cursor-pointer text-center">
+    {files.length > 0 ? `${files.length} file(s) selected` : "Choose PDF files"}
+    <input
+      type="file"
+      multiple
+      onChange={handleFileChange}
+      className="hidden"
+    />
+  </label>
+
+  <button
+    onClick={handleUpload}
+    disabled={isUploading}
+    className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 px-4 py-3 rounded-xl font-medium transition"
+  >
+    {isUploading ? "Uploading..." : "Upload Files"}
+  </button>
+
+  {uploadedDocs.length > 0 && (
+    <div className="mt-3 space-y-2 text-xs">
+      {uploadedDocs.map((doc, i) => (
+        <div
+          key={i}
+          className="bg-[#1f2937] px-3 py-2 rounded-lg flex justify-between items-center"
+        >
+          <span className="truncate">{doc}</span>
+          <span className="text-green-400">✓</span>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {uploadSuccess && (
+    <div className="text-green-400 text-xs text-center">
+      ✅ Upload successful
+    </div>
+  )}
+</div>
+      <div className="flex flex-1">
         <div className="hidden md:flex w-72 flex-col bg-[#111827] border-r border-white/10 p-6">
           <h2 className="text-xl font-semibold mb-6">📄 Documents</h2>
 
